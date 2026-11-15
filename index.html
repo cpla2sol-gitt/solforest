@@ -328,6 +328,25 @@ a:focus-visible,button:focus-visible,summary:focus-visible{ outline:2px solid va
 .apply-dlg .cform, .apply-dlg .form-done{ margin:28px 40px 40px; }
 .form-done .btn{ margin-top:24px; }
 body.dlg-open{ overflow:hidden; }
+.dlg-meta{ margin-top:6px !important; font-size:13px !important; color:var(--ivory-3) !important; }
+.cform .grp{ margin:8px 0 -6px; padding-top:22px; border-top:1px solid var(--line); font-size:13px; font-weight:600; letter-spacing:.04em; color:var(--brass); }
+.cform .grp:first-of-type{ margin-top:0; padding-top:0; border-top:0; }
+.cform textarea{ height:128px; min-height:128px; }
+.cform ::placeholder{ color:rgba(242,237,227,.38); }
+.apply-dlg .submit-row{ position:sticky; bottom:0; z-index:2; margin:8px -40px -40px; padding:16px 40px; background:var(--brand); border-top:1px solid var(--line); justify-content:space-between; }
+.req-progress{ margin:0; font-size:13px; color:var(--ivory-2); }
+.req-progress b{ color:var(--ivory); font-weight:600; }
+.req-progress.done{ color:var(--brass); }
+.apply-dlg .form-msg{ flex-basis:100%; order:3; }
+.apply-dlg .form-msg:empty{ display:none; }
+@media (max-width:640px){
+  .apply-dlg .submit-row{ margin:8px -20px -32px; padding:12px 20px; flex-wrap:nowrap; gap:12px; }
+  .apply-dlg .submit-row .btn{ width:auto; flex:none; min-height:48px; padding:0 20px; }
+  .req-progress{ flex:1; line-height:1.4; }
+  .apply-dlg .form-msg{ position:absolute; left:20px; right:20px; bottom:100%; padding:8px 0; background:var(--brand); }
+  .dlg-head h2{ font-size:20px; margin-top:10px; } .dlg-head p:not(.dlg-meta){ display:none; }
+}
+
 .side-title{ margin:0 0 14px; font-size:13px; color:var(--ivory-2); }
 @media (max-width:640px){
   .apply-dlg{ width:100%; max-width:100%; height:100%; max-height:100%; border-radius:0; border:0; }
@@ -686,7 +705,7 @@ body.dlg-open{ overflow:hidden; }
 </main>
 <dialog class="apply-dlg" id="apply" aria-labelledby="apply-title">
   <div class="dlg-head">
-    <div><span class="eyebrow">상담 신청</span><h2 id="apply-title">상황을 간략히 말씀해 주세요.</h2><p>확인 후 남겨 주신 연락처로 연락드리겠습니다.</p></div>
+    <div><span class="eyebrow">상담 신청</span><h2 id="apply-title">상황을 간략히 말씀해 주세요.</h2><p>확인 후 남겨 주신 연락처로 연락드리겠습니다.</p><p class="dlg-meta">작성 시간 약 2분 · <span class="req" aria-hidden="true">*</span> 표시는 필수 항목입니다</p></div>
     <button class="dlg-close" type="button" data-close-apply aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
   </div>
     <form class="cform" id="cform" novalidate data-key="58b58cba-77b9-455e-adde-7817e58da3e9">
@@ -695,6 +714,7 @@ body.dlg-open{ overflow:hidden; }
           <input type="hidden" name="from_name" value="솔숲 홈페이지">
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
+          <h3 class="grp">문의 정보</h3>
           <fieldset class="f" data-req="radio" data-err="문의하시는 분을 골라 주세요.">
             <legend>문의하시는 분<span class="req" aria-hidden="true">*</span></legend>
             <div class="chips">
@@ -714,21 +734,21 @@ body.dlg-open{ overflow:hidden; }
               <label><input type="checkbox" name="상담 분야" value="산업재해"><span>산업재해</span></label>
               <label><input type="checkbox" name="상담 분야" value="인사노무 자문"><span>인사노무 자문</span></label>
               <label><input type="checkbox" name="상담 분야" value="HR컨설팅"><span>HR컨설팅</span></label>
-              <label><input type="checkbox" name="상담 분야" value="HR컨설팅"><span>HR컨설팅</span></label>
               <label><input type="checkbox" name="상담 분야" value="급여 아웃소싱"><span>급여 아웃소싱</span></label>
               <label><input type="checkbox" name="상담 분야" value="기타"><span>기타</span></label>
             </div>
           </fieldset>
 
+          <h3 class="grp">연락처</h3>
           <div class="f-row">
             <div class="f" data-req="text" data-err="성함이나 회사명을 적어 주세요.">
               <label for="cf-name">성함 (기업은 회사명)<span class="req" aria-hidden="true">*</span></label>
-              <input id="cf-name" name="성함·회사명" type="text" autocomplete="name" placeholder="홍길동" aria-required="true">
+              <input id="cf-name" name="성함·회사명" type="text" autocomplete="name" placeholder="예: 홍길동" aria-required="true">
               <p class="err" aria-live="polite"></p>
             </div>
-            <div class="f" data-req="text" data-err="연락받으실 전화번호나 메일을 적어 주세요.">
+            <div class="f" data-req="contact" data-err="연락받으실 전화번호나 메일을 적어 주세요." data-err2="전화번호나 메일 주소 형식을 확인해 주세요.">
               <label for="cf-contact">연락처<span class="req" aria-hidden="true">*</span></label>
-              <input id="cf-contact" name="연락처" type="text" autocomplete="tel" placeholder="010-0000-0000 또는 메일 주소" aria-required="true">
+              <input id="cf-contact" name="연락처" type="text" autocomplete="tel" placeholder="예: 010-1234-5678 또는 메일 주소" aria-required="true">
               <p class="err" aria-live="polite"></p>
             </div>
           </div>
@@ -743,18 +763,19 @@ body.dlg-open{ overflow:hidden; }
             </div>
           </fieldset>
 
+          <h3 class="grp">상담 내용</h3>
           <div class="f" data-req="text" data-err="어떤 일이 있었는지 간단히 적어 주세요.">
             <label for="cf-what"><b class="n">01</b> 언제, 무슨 일이 있었나요?<span class="req" aria-hidden="true">*</span></label>
-            <textarea id="cf-what" name="있었던 일" rows="3" placeholder="2026년 10월에 갑자기 해고 통보를 받았습니다." aria-required="true"></textarea>
+            <textarea id="cf-what" name="있었던 일" rows="4" placeholder="예: 2026년 10월에 갑자기 해고 통보를 받았습니다." aria-required="true"></textarea>
             <p class="err" aria-live="polite"></p>
           </div>
           <div class="f">
             <label for="cf-now"><b class="n">02</b> 지금은 어떤 상태인가요? <small>회사 규모, 고용 형태 등</small></label>
-            <textarea id="cf-now" name="현재 상태" rows="2" placeholder="직원 20명 정도의 회사에서 정규직으로 3년 근무했습니다."></textarea>
+            <textarea id="cf-now" name="현재 상태" rows="4" placeholder="예: 직원 20명 정도의 회사에서 정규직으로 3년 근무했습니다."></textarea>
           </div>
           <div class="f">
             <label for="cf-goal"><b class="n">03</b> 원하시는 결과는 무엇인가요?</label>
-            <textarea id="cf-goal" name="원하시는 결과" rows="2" placeholder="복직 또는 금전 보상을 원합니다."></textarea>
+            <textarea id="cf-goal" name="원하시는 결과" rows="4" placeholder="예: 복직 또는 금전 보상을 원합니다."></textarea>
           </div>
           <p class="note">건강 상태 등 민감한 내용은 신청서에 적지 마시고, 상담 때 말씀해 주세요.</p>
 
@@ -774,6 +795,7 @@ body.dlg-open{ overflow:hidden; }
           </div>
 
           <div class="submit-row">
+            <p class="req-progress" aria-live="polite">필수 항목 <b>0</b>/5 작성</p>
             <button class="btn btn-brass" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span class="lbl">상담 신청 보내기</span></button>
             <p class="form-msg" role="status" aria-live="polite"></p>
           </div>
@@ -863,12 +885,20 @@ body.dlg-open{ overflow:hidden; }
 (function(){
   var form=document.getElementById('cform'); if(!form) return;
   var msg=form.querySelector('.form-msg'), btn=form.querySelector('button[type=submit]'), lbl=btn.querySelector('.lbl');
-  function setErr(f,on){ var e=f.querySelector('.err'); f.classList.toggle('invalid',on); if(e) e.textContent=on?f.getAttribute('data-err'):'';
+  function setErr(f,on){ var e=f.querySelector('.err'); f.classList.toggle('invalid',on);
+    var m=f.getAttribute('data-err'); if(on && f.getAttribute('data-req')==='contact' && f.querySelector('input').value.trim()) m=f.getAttribute('data-err2');
+    if(e) e.textContent=on?m:'';
     f.querySelectorAll('input,textarea').forEach(function(i){ if(i.type!=='hidden') i.setAttribute('aria-invalid', on?'true':'false'); }); }
   function check(f){ var t=f.getAttribute('data-req');
     if(t==='text'){ var i=f.querySelector('input,textarea'); return i.value.trim().length>0; }
+    if(t==='contact'){ var v=f.querySelector('input').value.trim(); if(!v) return false; return v.indexOf('@')>-1 ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) : v.replace(/\D/g,'').length>=8; }
     if(t==='radio'){ return !!f.querySelector('input:checked'); }
     if(t==='check'){ return f.querySelector('input').checked; } return true; }
+  var prog=form.querySelector('.req-progress'), reqs=form.querySelectorAll('[data-req]');
+  function progress(){ if(!prog) return; var n=0; reqs.forEach(function(f){ if(check(f)) n++; });
+    prog.classList.toggle('done', n===reqs.length);
+    prog.innerHTML = n===reqs.length ? '필수 항목을 모두 작성했습니다' : '필수 항목 <b>'+n+'</b>/'+reqs.length+' 작성'; }
+  form.addEventListener('input',progress); form.addEventListener('change',progress); progress();
   form.querySelectorAll('[data-req]').forEach(function(f){
     f.addEventListener('input',function(){ if(f.classList.contains('invalid') && check(f)) setErr(f,false); });
     f.addEventListener('change',function(){ if(f.classList.contains('invalid') && check(f)) setErr(f,false); });
@@ -877,7 +907,7 @@ body.dlg-open{ overflow:hidden; }
     ev.preventDefault(); msg.textContent=''; msg.className='form-msg';
     var first=null;
     form.querySelectorAll('[data-req]').forEach(function(f){ var ok=check(f); setErr(f,!ok); if(!ok && !first) first=f; });
-    if(first){ var t=first.querySelector('input:not([type=hidden]),textarea'); if(t) t.focus(); msg.textContent='표시된 항목을 확인해 주세요.'; msg.className='form-msg bad'; return; }
+    if(first){ var t=first.querySelector('input:not([type=hidden]),textarea'); first.scrollIntoView({block:'center',behavior:'smooth'}); if(t) t.focus({preventScroll:true}); msg.textContent='표시된 항목을 확인해 주세요.'; msg.className='form-msg bad'; return; }
     if(form.botcheck && form.botcheck.checked) return;
     var key=form.getAttribute('data-key');
     if(!key){ msg.textContent='신청서 연결을 준비 중입니다. 지금은 메일이나 카카오톡으로 문의해 주세요.'; msg.className='form-msg bad'; return; }
