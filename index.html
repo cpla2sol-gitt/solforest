@@ -935,7 +935,8 @@ body.dlg-open{ overflow:hidden; }
   var opener=null;
   document.addEventListener('click',function(e){
     var o=e.target.closest('[data-open-apply]');
-    if(o){ opener=o; d.showModal(); document.body.classList.add('dlg-open'); var f=d.querySelector('input:not([type=hidden]):not(.hp)'); if(f) f.focus(); return; }
+    if(o){ opener=o; var ar=o.getAttribute('data-area'); if(ar){ d.querySelectorAll('input[name="상담 분야"]').forEach(function(c){ if(c.value===ar && !c.checked){ c.checked=true; c.dispatchEvent(new Event('change',{bubbles:true})); } }); }
+      d.showModal(); document.body.classList.add('dlg-open'); var f=d.querySelector('input:not([type=hidden]):not(.hp)'); if(f) f.focus(); return; }
     if(e.target.closest('[data-close-apply]')) d.close();
   });
   d.addEventListener('click',function(e){ if(e.target===d) d.close(); });
