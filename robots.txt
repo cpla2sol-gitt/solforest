@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solforest.co.kr/sitemap.xml
