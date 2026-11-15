@@ -509,7 +509,16 @@ body.dlg-open{ overflow:hidden; }
 .link-btn .icon{ width:14px; height:14px; transition:transform .3s var(--ease); }
 .link-btn:hover .icon{ transform:translateX(3px); }
 .notes h3.notes-title{ font-size:13px; }
-@media (max-width:860px){ .flow-side{ position:static; } .page-toc{ flex-direction:row; flex-wrap:wrap; gap:8px; border-left:0; margin-top:20px; } .page-toc a{ padding:6px 12px; margin:0; border:1px solid var(--line); border-radius:999px; font-size:13px; } .sides{ grid-template-columns:1fr; } }
+.toc-mob{ display:none; }
+@media (max-width:860px){
+  .flow-side{ position:static; } .toc-desk{ display:none; } .sides{ grid-template-columns:1fr; }
+  .toc-mob{ display:flex; flex-direction:row; flex-wrap:nowrap; gap:8px; position:sticky; top:85px; z-index:30; margin:0 calc(-1 * var(--gutter)); padding:10px var(--gutter);
+    border-left:0; border-bottom:1px solid var(--line); background:rgba(11,23,18,.94); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); overflow-x:auto; scrollbar-width:none; }
+  .toc-mob::-webkit-scrollbar{ display:none; }
+  .toc-mob a{ flex:none; padding:7px 14px; margin:0; border:1px solid var(--line); border-radius:999px; font-size:13px; color:var(--ivory-2); }
+  .toc-mob a[aria-current="true"]{ background:var(--brass); border-color:var(--brass); color:var(--ink); font-weight:600; }
+  .flow-main > *{ scroll-margin-top:150px; }
+}
 
 .flow{ list-style:none; margin:0; padding:0; position:relative; }
 .flow::before{ content:""; position:absolute; left:21px; top:22px; bottom:22px; width:1px; background:linear-gradient(var(--brass), rgba(198,161,91,.15)); }
@@ -602,13 +611,19 @@ body.dlg-open{ overflow:hidden; }
     <div class="wrap d-grid">
       <div class="flow-side">
         <div class="rv"><span class="eyebrow">상세 절차</span><h2 id="flow-title">자문은 이렇게 진행됩니다</h2></div>
-        <nav class="page-toc" aria-label="이 페이지에서">
+        <nav class="page-toc toc-desk" aria-label="이 페이지에서">
           <a href="#flow">진행 순서</a>
           
           <a href="#prep">준비 자료</a>
           <a href="#notes">알아두세요</a>
         </nav>
       </div>
+      <nav class="page-toc toc-mob" aria-label="이 페이지에서 (모바일)">
+        <a href="#flow">진행 순서</a>
+        
+        <a href="#prep">준비 자료</a>
+        <a href="#notes">알아두세요</a>
+      </nav>
       <div class="flow-main">
         <ol class="flow" id="flow">
           <li class="rv"><span class="node" aria-hidden="true">01</span><div><h3><span class="sr-only">1단계. </span>현황 진단</h3><p>근로계약서, 취업규칙, 임금명세서와 근로시간 기록을 살펴봅니다.</p></div></li>
@@ -850,6 +865,18 @@ body.dlg-open{ overflow:hidden; }
   d.addEventListener('close',function(){ document.body.classList.remove('dlg-open'); if(opener) opener.focus(); });
 })();
 </script>
-<script>(function(){var links=[].slice.call(document.querySelectorAll('.page-toc a'));if(!links.length||!('IntersectionObserver' in window))return;var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.removeAttribute('aria-current');});var a=map[e.target.id];if(a)a.setAttribute('aria-current','true');}});},{rootMargin:'-40% 0px -55% 0px'});Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});})();</script>
+<script>(function(){
+  var links=[].slice.call(document.querySelectorAll('.page-toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};
+  links.forEach(function(a){var id=a.getAttribute('href').slice(1);(map[id]=map[id]||[]).push(a);});
+  function activate(id){
+    links.forEach(function(a){a.removeAttribute('aria-current');});
+    (map[id]||[]).forEach(function(a){a.setAttribute('aria-current','true');
+      var bar=a.parentNode; if(bar.classList.contains('toc-mob')){var L=a.offsetLeft-bar.offsetLeft, R=L+a.offsetWidth; if(L<bar.scrollLeft+8||R>bar.scrollLeft+bar.clientWidth-8){bar.scrollTo({left:Math.max(0,L-16),behavior:'smooth'});}}});
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)activate(e.target.id);});},{rootMargin:'-35% 0px -60% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
+})();</script>
 </body>
 </html>
