@@ -375,6 +375,7 @@ body.dlg-open{ overflow:hidden; }
 @media (max-width:768px){ .footer-info > span{ display:block; } .footer-info > span + span::before{ display:none; } }
 
 @media (max-width:600px){ .br-pc{ display:none; } }
+@media (max-width:1024px){ .br-desk{ display:none; } }
 /* 오시는 길 */
 .location{ border-top:1px solid var(--line); }
 .loc-grid{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); gap:64px; align-items:stretch; }
@@ -607,7 +608,7 @@ body.dlg-open{ overflow:hidden; }
     <div class="wrap">
       <nav class="crumb" aria-label="현재 위치"><a href="index.html">홈</a><span aria-hidden="true">/</span><span aria-current="page">업무 분야</span></nav>
       <h1>업무 분야</h1>
-      <p class="lead">기업의 고민도, 근로자의 어려움도 함께 풀어갑니다. 분야를 누르면 자세한 업무 내용을 보실 수 있습니다.</p>
+      <p class="lead">기업의 고민도, 근로자의 어려움도 함께 풀어갑니다.<br class="br-desk"> 분야를 누르면 자세한 업무 내용을 보실 수 있습니다.</p>
     </div>
   </section>
 
